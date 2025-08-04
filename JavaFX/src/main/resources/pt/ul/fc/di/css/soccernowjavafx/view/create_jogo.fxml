@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="pt.ul.fc.di.css.soccernowjavafx.controller.CreateJogoController"
+            fitToWidth="true"
+            prefWidth="500" prefHeight="600">
+
+    <content>
+        <VBox spacing="15" alignment="TOP_CENTER" fillWidth="true">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <MenuBar>
+                <menus>
+                    <Menu text="Comandos">
+                        <items>
+                            <MenuItem text="Voltar" onAction="#back"/>
+                        </items>
+                    </Menu>
+                </menus>
+            </MenuBar>
+
+            <Label text="Criar Novo Jogo" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+            <Label text="Data do Jogo:"/>
+            <DatePicker fx:id="dataPicker"/>
+
+            <Label text="Horário:"/>
+            <ComboBox fx:id="turnoComboBox"/>
+
+            <Label text="Local:"/>
+            <TextField fx:id="localField" promptText="Insira o local do jogo"/>
+
+            <Label text="Selecionar Árbitros:"/>
+            <VBox fx:id="arbitrosBox" spacing="5"/>
+
+            <Label text="Selecionar Equipas e Jogadores" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+            <HBox spacing="30" alignment="TOP_CENTER">
+                <VBox spacing="10" prefWidth="220">
+                    <Label text="Equipa Visitada:"/>
+                    <ComboBox fx:id="visitadaComboBox" onAction="#handleSelecionarVisitada"/>
+                    <Label text="Selecionar Titulares:"/>
+                    <VBox fx:id="jogadoresVisitadaBox" spacing="5" style="-fx-border-color: lightgray; -fx-padding: 5;"/>
+                    <Button text="Confirmar Titulares Visitada" onAction="#handleConfirmarTitularesVisitada"/>
+                </VBox>
+
+                <VBox spacing="10" prefWidth="220">
+                    <Label text="Equipa Visitante:"/>
+                    <ComboBox fx:id="visitanteComboBox" onAction="#handleSelecionarVisitante"/>
+                    <Label text="Selecionar Titulares:"/>
+                    <VBox fx:id="jogadoresVisitanteBox" spacing="5" style="-fx-border-color: lightgray; -fx-padding: 5;"/>
+                    <Button text="Confirmar Titulares Visitante" onAction="#handleConfirmarTitularesVisitante"/>
+                </VBox>
+            </HBox>
+
+            <Button text="Criar Jogo" onAction="#handleCriarJogo"/>
+
+            <Label fx:id="mensagemLabel" textFill="red"/>
+        </VBox>
+    </content>
+</ScrollPane>

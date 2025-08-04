@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 320px;
+        }
+        h2 {
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 0.5rem 0 0.2rem 0;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="password"] {
+            padding: 8px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            margin-top: 1.5rem;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            margin-top: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>Login</h2>
+    <form method="get" action = "/login">
+        <label for="email_auth">Email</label>
+        <input type="text" id="email_auth" name="email_auth" 		required
+		       placeholder="Introduza o seu email (xx@xx.xx)"
+		       pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"
+		       title="Introduza um email válido no formato xx@xx.xx" />
+		
+        <label for="password">Senha</label>
+        <input type="password" id="password" name="password" required placeholder="Introduza a sua senha" />
+
+        <button type="submit">Entrar</button>
+    </form>
+    <div class="error-message" th:if="${error != null}" th:text="${error}"></div>
+</div>
+</body>
+</html>

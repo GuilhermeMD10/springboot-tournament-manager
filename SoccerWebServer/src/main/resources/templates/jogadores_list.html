@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::section})}">
+<body>
+	<section>
+	        <h2>Jogadores:</h2>
+			<!-- Filter by Nome -->
+			<form method="get" action="/jogadores/nome" style="display: flex; align-items: center; margin: 0;">
+			    <input type="text" name="nome" placeholder="Filtrar por nome" required pattern="^[A-Za-zÀ-ÿ\s]+$" title="Só letras e espaços são permitidos"
+			           style="padding: 4px 6px; font-size: 0.9rem; line-height: 1;" />
+			    <button type="submit" style="max-width: 300px; padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			</form>
+
+			<form method="get" action="/jogadores/posicao" style="display: flex; align-items: center; margin: 0;">
+			    <select name="posicao" required style="margin-right: 0.5rem; padding: 20px 6px; font-size: 0.9rem; line-height: 1;">
+			        <option value="" disabled selected>Filtrar por posição</option>
+			        <option value="GUARDA_REDES">GUARDA_REDES</option>
+			        <option value="FIXO">FIXO</option>
+			        <option value="ALA">ALA</option>
+			        <option value="PIVO">PIVO</option>
+			    </select>
+			    <button type="submit" style="max-width: 300px; padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			</form>
+
+			<form method="get" action="/jogadores/golos" style="display: flex; align-items: center; column-gap: 0.3rem; margin: 0;">
+			  <select name="golosFiltro" id="golosFiltro" required style="padding: 4px 6px; font-size: 0.9rem; max-width: 200px;">
+		    	<option value="golos">X golos</option>
+				<option value="golosMin">Min/Max de golos</option>
+			    <option value="top5">Top 5 marcadores</option>
+			
+			  </select>
+
+			  <!-- Toggle for Min/Max -->
+			  <select name="minOrMaxGolos" id="minMaxToggle" style="padding: 4px 6px; font-size: 0.9rem; max-width: 200px">
+			    <option value="maior-que">Mínimo</option>
+			    <option value="menor-que">Máximo</option> 	
+			  </select>
+
+			  <input type="number" name="golosMin" id="golosMinInput" placeholder="Golos marcados" min="0"
+			         style="padding: 4px 6px; font-size: 0.9rem; line-height: 1;" />
+
+			  <button type="submit" style="padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			</form>
+
+			<form method="get" action="/jogadores/cartoes" style="display: flex; align-items: center; column-gap: 0.4rem; margin: 0;">
+			  <!-- Tipo de cartão -->
+			  <select name="tipoCartao" id="tipoCartao" required style="padding: 4px 6px; font-size: 0.9rem;">
+			    <option value="amarelos">Amarelos</option>
+			    <option value="vermelhos">Vermelhos</option>
+			    <option value="cartoes">Ambos</option>
+			  </select>
+
+			  <!-- Tipo de filtro -->
+			  <select name="filtroCartao" id="filtroCartao" required style="padding: 4px 6px; font-size: 0.9rem;">
+				<option value="x">X cartões</option>
+				<option value="minmax">Min/Máx cartões</option>
+			    <option value="top5">Top 5</option>
+			    
+			  </select>
+
+			  <!-- Min/Max toggle -->
+			  <select name="minOrMaxCartao" id="minMaxCartaoToggle" style="padding: 4px 6px; font-size: 0.9rem;">
+			    <option value="maior-que">Mínimo</option>
+			    <option value="menor-que">Máximo</option>
+			  </select>
+
+			  <!-- Input de número de cartões -->
+			  <input type="number" name="valorCartao" id="valorCartaoInput" placeholder="Nº de cartões" min="0"
+			         style="padding: 4px 6px; font-size: 0.9rem; line-height: 1;" />
+
+			  <button type="submit" style="padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			</form>
+
+			<form method="get" action="/jogadores/jogos" style="display: flex; align-items: center; column-gap: 0.3rem; margin-bottom: 2px;">
+			  <select name="jogosFiltro" id="jogosFiltro" required style="padding: 4px 6px; font-size: 0.9rem; max-width: 200px;">
+				<option value="xjogos">X jogos</option>
+				<option value="min">Min/Max de jogos</option>
+			    <option value="top5">Top 5 mais jogos</option>
+			  </select>
+
+			  <!-- Min/Max toggle for jogos -->
+			  <select name="minOrMaxJogos" id="minMaxJogosToggle" style="padding: 4px 6px; font-size: 0.9rem; max-width: 200px">
+			    <option value="maior-que">Mínimo</option>
+			    <option value="menor-que">Máximo</option>
+			  </select>
+
+			  <input type="number" name="jogosMin" id="jogosMinInput" placeholder="Jogos jogados" min="0"
+			         style="padding: 4px 6px; font-size: 0.9rem; line-height: 1;" />
+
+			  <button type="submit" style="padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			</form>
+			
+			<form method="get" action="/jogadores" style="margin: 8px 0;">
+			  <button type="submit" style="max-width: 300px; padding: 6px 12px; font-size: 0.9rem;">
+			    Limpar filtros
+			  </button>
+			</form>
+
+	        <table>
+	            <thead>
+	                <tr>
+	                    <th>Nome</th>
+	                    <th>NIF</th>
+	                    <th>Email</th>
+						<th>Posição Preferida</th>
+						<th>Golos</th>
+						<th>Amarelos</th>
+						<th>Vermelhos</th>
+						<th>Jogos Jogados</th>
+						<th>Equipas</th>
+	                </tr>
+	            </thead>
+				<tbody>
+				    <tr th:if="${jogadores.empty}">
+				        <td colspan="8">Não há jogadores</td>
+				    </tr>
+				    <tr th:each="j : ${jogadores}">
+				        <td th:text="${j.nome}">Nome</td>
+				        <td th:text="${j.nif}">NIF</td>
+				        <td th:text="${j.email}">Email</td>
+						<td th:text="${j.prefPos}">Posição Preferida</td>
+				        <td th:text="${j.golos}">Golos</td>
+				        <td th:text="${j.amarelos}">Amarelos</td>
+				        <td th:text="${j.vermelhos}">Vermelhos</td>
+				        <td th:text="${j.partidasJogadas}">Jogos Jogados</td>
+						<td>
+						  <span th:each="e, stat : ${j.equipas}">
+						    <span th:text="${e.nome}"></span><span th:if="${!stat.last}">, </span>
+						  </span>
+						</td>
+				    </tr>
+				</tbody>
+	        </table>
+	    </section>
+</body>
+</html>
+
+<script>
+	// FORM DO JOGOS
+	const select = document.getElementById('jogosFiltro');
+	const input_jogos = document.getElementById('jogosMinInput');
+	const toggle_jogos = document.getElementById('minMaxJogosToggle');
+
+	function updateInputStateJogos() {
+	  const value = select.value;
+
+	  if (value === 'min') {
+	    input_jogos.disabled = false;
+	    input_jogos.placeholder = 'Mínimo de jogos';
+	    toggle_jogos.style.display = 'inline-block';
+	    toggle_jogos.disabled = false;
+	  } else if (value === 'xjogos') {
+	    input_jogos.disabled = false;
+	    input_jogos.placeholder = 'Número exato de jogos';
+	    toggle_jogos.style.display = 'none';
+	    toggle_jogos.disabled = true;
+	  } else if (value === 'top5') {
+	    input_jogos.disabled = true;
+	    input_jogos.placeholder = 'Não aplicável';
+	    input_jogos.value = '';
+	    toggle_jogos.style.display = 'none';
+	    toggle_jogos.disabled = true;
+	  }
+	}
+
+	updateInputStateJogos(); // Run on page load
+	select.addEventListener('change', updateInputStateJogos);
+	
+	
+  //FORM DO GOLOS
+  const filtro = document.getElementById('golosFiltro');
+  const input_golos = document.getElementById('golosMinInput');
+  const toggle_golos = document.getElementById('minMaxToggle');
+
+  function updateFormStateGolos() {
+    const selected = filtro.value;
+
+    if (selected === 'golosMin') {
+      input_golos.disabled = false;
+      input_golos.placeholder = 'Golos marcados';
+      toggle_golos.style.display = 'inline-block';
+      toggle_golos.disabled = false;
+    } else if (selected === 'golos') {
+      input_golos.disabled = false;
+      input_golos.placeholder = 'Número exato de golos';
+      toggle_golos.style.display = 'none';
+      toggle_golos.disabled = true;
+    } else {
+      input_golos.disabled = true;
+      input_golos.placeholder = 'Não aplicável';
+      input_golos.value = '';
+      toggle_golos.style.display = 'none';
+      toggle_golos.disabled = true;
+    }
+  }
+
+  // Run on page load
+  updateFormStateGolos();
+
+  // Update on selection change
+  filtro.addEventListener('change', updateFormStateGolos);
+  
+  //CARTOES
+   const filtroSelect = document.getElementById('filtroCartao');
+   const inputCartao = document.getElementById('valorCartaoInput');
+   const toggleCartao = document.getElementById('minMaxCartaoToggle');
+
+   function updateCartaoForm() {
+     const filtro = filtroSelect.value;
+
+     if (filtro === 'minmax') {
+       inputCartao.disabled = false;
+       inputCartao.placeholder = 'Nº de cartões';
+       toggleCartao.style.display = 'inline-block';
+       toggleCartao.disabled = false;
+     } else if (filtro === 'x') {
+       inputCartao.disabled = false;
+       inputCartao.placeholder = 'Número exato de cartões';
+       toggleCartao.style.display = 'none';
+       toggleCartao.disabled = true;
+     } else if (filtro === 'top5') {
+       inputCartao.disabled = true;
+       inputCartao.placeholder = 'Não aplicável';
+       inputCartao.value = '';
+       toggleCartao.style.display = 'none';
+       toggleCartao.disabled = true;
+     }
+   }
+
+   // Run on page load
+   updateCartaoForm();
+
+   // Update on change
+   filtroSelect.addEventListener('change', updateCartaoForm);
+</script>

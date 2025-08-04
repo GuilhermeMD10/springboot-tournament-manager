@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::section})}">
+<body>
+	<section>
+	        <h2>Arbitros:</h2>
+			<!-- Filtrar por nome -->
+			<form method="get" action="/arbitros/nome" style="display: flex; align-items: center; margin: 0;">
+			  <input type="text" name="nome" placeholder="Filtrar por nome" required pattern="^[A-Za-zÀ-ÿ\s]+$"
+			         title="Só letras e espaços são permitidos"
+			         style="padding: 4px 6px; font-size: 0.9rem; line-height: 1;" />
+			  <button type="submit" style="padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			</form>
+
+			<!-- Filtrar por número de jogos officiados -->
+			<form method="get" action="/arbitros/jogos" style="display: flex; align-items: center; column-gap: 0.3rem; margin: 0;">
+			  <select name="filtroJogos" id="filtroJogosArbitros" required style="padding: 4px 6px; font-size: 0.9rem;">
+			    <option value="x">X jogos</option>
+			    <option value="minmax">Min/Max de jogos</option>
+			    <option value="mais">5 Árbitros com mais jogos</option>
+			  </select>
+
+			  <select name="minOrMaxJogos" id="minMaxJogosToggleArbitros" style="padding: 4px 6px; font-size: 0.9rem;">
+			    <option value="maior-que">Mínimo</option>
+			    <option value="menor-que">Máximo</option>
+			  </select>
+
+			  <input type="number" name="numJogos" id="jogosInputArbitros" placeholder="Nº de jogos" min="0"
+			         style="padding: 4px 6px; font-size: 0.9rem;" />
+
+			  <button type="submit" style="padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			</form>
+
+			<!-- Filtrar por cartões dados -->
+			<form method="get" action="/arbitros/cartoes" style="display: flex; align-items: center; column-gap: 0.3rem; margin-bottom: 6px;">
+			  <select name="filtroCartoes" id="filtroCartoesArbitros" required style="padding: 4px 6px; font-size: 0.9rem;">
+			    <option value="x">X cartões</option>
+			    <option value="minmax">Min/Max de cartões</option>
+			    <option value="mais">Árbitro com mais cartões</option>
+			  </select>
+
+			  <select name="minOrMaxCartoes" id="minMaxCartoesToggleArbitros" style="padding: 4px 6px; font-size: 0.9rem;">
+			    <option value="maior-que">Mínimo</option>
+			    <option value="menor-que">Máximo</option>
+			  </select>
+
+			  <input type="number" name="numCartoes" id="cartoesInputArbitros" placeholder="Nº de cartões" min="0"
+			         style="padding: 4px 6px; font-size: 0.9rem;" />
+
+			  <button type="submit" style="padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			</form>
+
+			<form method="get" action="/arbitros" style="margin: 8px 0;">
+			  <button type="submit" style="padding: 6px 12px; font-size: 0.9rem;">
+			    Limpar filtros
+			  </button>
+			</form>
+
+	        <table>
+	            <thead>
+	                <tr>
+	                    <th>Nome</th>
+	                    <th>NIF</th>
+	                    <th>Email</th>
+						<th>Certificado</th>
+						<th>Partidas Oficiadas</th>
+						<th>Cartões Mostrados</th>
+	                </tr>
+	            </thead>
+				<tbody>
+				    <tr th:if="${arbitros.empty}">
+				        <td colspan="8">Não há arbitros</td>
+				    </tr>
+				    <tr th:each="a : ${arbitros}">
+				        <td th:text="${a.nome}">Nome</td>
+				        <td th:text="${a.nif}">NIF</td>
+				        <td th:text="${a.email}">Email</td>
+						<td th:text="${a.certificado}">Certificado</td>
+						<td th:text="${a.partidasOficiadas}">Partidas Oficiadas</td>
+						<td th:text="${a.cartoesMostrados}">Cartões Mostrados</td>
+
+				</tbody>
+	        </table>
+	    </section>
+</body>
+</html>
+
+<script>
+	// ÁRBITROS - Jogos officiados
+	const filtroJogosArbitros = document.getElementById('filtroJogosArbitros');
+	const inputJogosArbitros = document.getElementById('jogosInputArbitros');
+	const toggleJogosArbitros = document.getElementById('minMaxJogosToggleArbitros');
+
+	function updateFormJogosArbitros() {
+	  const val = filtroJogosArbitros.value;
+
+	  if (val === 'minmax') {
+	    inputJogosArbitros.disabled = false;
+	    inputJogosArbitros.placeholder = 'Nº de jogos';
+	    toggleJogosArbitros.style.display = 'inline-block';
+	    toggleJogosArbitros.disabled = false;
+	  } else if (val === 'x') {
+	    inputJogosArbitros.disabled = false;
+	    inputJogosArbitros.placeholder = 'Número exato de jogos';
+	    toggleJogosArbitros.style.display = 'none';
+	    toggleJogosArbitros.disabled = true;
+	  } else {
+	    inputJogosArbitros.disabled = true;
+	    inputJogosArbitros.placeholder = 'Não aplicável';
+	    inputJogosArbitros.value = '';
+	    toggleJogosArbitros.style.display = 'none';
+	    toggleJogosArbitros.disabled = true;
+	  }
+	}
+	updateFormJogosArbitros();
+	filtroJogosArbitros.addEventListener('change', updateFormJogosArbitros);
+
+	// ÁRBITROS - Cartões dados
+	const filtroCartoesArbitros = document.getElementById('filtroCartoesArbitros');
+	const inputCartoesArbitros = document.getElementById('cartoesInputArbitros');
+	const toggleCartoesArbitros = document.getElementById('minMaxCartoesToggleArbitros');
+
+	function updateFormCartoesArbitros() {
+	  const val = filtroCartoesArbitros.value;
+
+	  if (val === 'minmax') {
+	    inputCartoesArbitros.disabled = false;
+	    inputCartoesArbitros.placeholder = 'Nº de cartões';
+	    toggleCartoesArbitros.style.display = 'inline-block';
+	    toggleCartoesArbitros.disabled = false;
+	  } else if (val === 'x') {
+	    inputCartoesArbitros.disabled = false;
+	    inputCartoesArbitros.placeholder = 'Número exato de cartões';
+	    toggleCartoesArbitros.style.display = 'none';
+	    toggleCartoesArbitros.disabled = true;
+	  } else {
+	    inputCartoesArbitros.disabled = true;
+	    inputCartoesArbitros.placeholder = 'Não aplicável';
+	    inputCartoesArbitros.value = '';
+	    toggleCartoesArbitros.style.display = 'none';
+	    toggleCartoesArbitros.disabled = true;
+	  }
+	}
+	updateFormCartoesArbitros();
+	filtroCartoesArbitros.addEventListener('change', updateFormCartoesArbitros);
+</script>

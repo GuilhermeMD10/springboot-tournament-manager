@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:controller="pt.ul.fc.di.css.soccernowjavafx.controller.MainMenuController" prefHeight="300.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="334.0" prefWidth="230.0" VBox.vgrow="ALWAYS">
+      <children>
+            <Button fx:id="CreateUtilizadorButton" layoutX="41.0" layoutY="45.0" mnemonicParsing="false" onAction="#createUtilizador" prefHeight="51.0" prefWidth="147.0" text="Create Utilizador" />
+            <Button fx:id="FindUtilizadorButton" layoutX="41.0" layoutY="178.0" mnemonicParsing="false" onAction="#findUtilizador" prefHeight="51.0" prefWidth="147.0" text="Procurar Utilizador" />
+            <Button fx:id="CreateEquipaButton" layoutX="41.0" layoutY="270.0" mnemonicParsing="false" onAction="#createEquipa" prefHeight="51.0" prefWidth="147.0" text="Create Equipa" />
+            <Button fx:id="FindEquipaButton" layoutX="41.0" layoutY="330.0" mnemonicParsing="false" onAction="#findEquipa" prefHeight="51.0" prefWidth="147.0" text="Procurar Equipa" />
+  
+            <Button fx:id="CreateCampeonatoButton" layoutX="41.0" layoutY="400.0" mnemonicParsing="false" onAction="#createCampeonato" prefHeight="51.0" prefWidth="147.0" text="Create Campeonato" />
+            <Button fx:id="UpdateCampeonatoButton" layoutX="41.0" layoutY="480.0" mnemonicParsing="false" onAction="#updateCampeonato" prefHeight="51.0" prefWidth="147.0" text="Update Campeonato" />
+            <Button fx:id="CreateJogoButton" layoutX="41.0" layoutY="560.0" mnemonicParsing="false" onAction="#createJogo" prefHeight="51.0" prefWidth="147.0" text="Create Jogo" />
+            <Button fx:id="AddResultadoButton" layoutX="41.0" layoutY="640.0" mnemonicParsing="false" onAction="#addResultado" prefHeight="51.0" prefWidth="147.0" text="Add Resultado" />
+
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>

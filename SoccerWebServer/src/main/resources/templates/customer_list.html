@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::section})}">
+
+<body>
+    <section>
+        <h2>Customers:</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Vat</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${customers.empty}">
+                    <td colspan="3">No Customers</td>
+                </tr>
+                <tr th:each="c : ${customers}">
+                    <td th:text="${c.id}">...</td>
+                    <td><a th:href="@{/customers/} + ${c.id}" th:text="${c.name}">...</a></td>
+                    <td th:text="${c.vat}">...</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</body>
+
+</html>

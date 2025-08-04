@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="pt.ul.fc.di.css.soccernowjavafx.controller.EquipaDetailController"
+      spacing="15" prefWidth="450" prefHeight="600">
+
+    <children>
+        <MenuBar>
+            <menus>
+                <Menu text="Commands">
+                    <items>
+                        <MenuItem fx:id="btnBack" text="Back" onAction="#back"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+
+
+        <Label text="Atualizar Equipa" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+        <VBox spacing="10" fx:id="editarEquipaBox" visible="false" managed="false">
+            <Label text="Novo Nome da Equipa:"/>
+            <TextField fx:id="novoNomeField" promptText="Insira novo nome"/>
+
+            <Label text="Adicionar Jogador:"/>
+            <HBox spacing="10">
+                <ComboBox fx:id="jogadoresDisponiveisComboBox" promptText="Selecionar jogador"/>
+                <Button text="+" onAction="#handleAdicionarJogador"/>
+            </HBox>
+
+            <Label text="Remover Jogadores:"/>
+            <FlowPane fx:id="jogadoresEquipaPane" hgap="10" vgap="10"/>
+        </VBox>
+
+        <HBox spacing="10">
+            <Button text="Guardar Alterações" onAction="#handleGuardarAlteracoes"/>
+            <Button text="Apagar Equipa" onAction="#handleApagarEquipa"/>
+        </HBox>
+
+        <Label text="Equipas Existentes:" style="-fx-font-weight: bold;"/>
+        <VBox fx:id="listaEquipasBox" spacing="5"/>
+
+        <Label fx:id="mensagemLabel" textFill="red"/>
+    </children>
+</VBox>

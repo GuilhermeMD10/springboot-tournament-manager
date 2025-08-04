@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+
+
+
+<VBox fx:controller="pt.ul.fc.di.css.soccernowjavafx.controller.CreateCampeonatoController" prefHeight="300.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <MenuBar>
+            <menus>
+            <Menu mnemonicParsing="false" text="Commands">
+                <items>
+                <MenuItem fx:id="btnBack" mnemonicParsing="false" onAction="#back" text="Back" />
+                </items>
+            </Menu>
+            </menus>
+        </MenuBar>
+        <Label text="Registar Campeonato" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+
+        <GridPane hgap="10" vgap="10">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20" />
+            </padding>
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" />
+                <ColumnConstraints hgrow="ALWAYS" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+            </rowConstraints>
+
+            <!-- {
+                "id": 0,
+                "nome": "string",
+                "plantel": [
+                    0
+                ]
+            } -->
+
+
+
+            <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+            <TextField fx:id="nomeField" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+        </GridPane>
+
+        <Button text="Criar Campeonato" fx:id="criarButton" onAction="#handleCriarCampeonato" />
+        <Label fx:id="mensagemLabel" textFill="red" />
+    </children>
+</VBox>

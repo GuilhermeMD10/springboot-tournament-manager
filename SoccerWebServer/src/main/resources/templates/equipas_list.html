@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::section})}">
+<body>
+	<section>
+	        <h2>Equipas:</h2>
+			
+			<!-- Filtro por Nome -->
+			<!-- Filtro por Nome -->
+			<form method="get" action="/equipas/nome" style="display: flex; align-items: center; margin-bottom: 0.3rem;">
+				<input type="text" name="nome" placeholder="Filtrar por nome"
+					title="Só letras e espaços são permitidos" style="padding: 4px 6px; font-size: 0.9rem;" />
+				<button type="submit" style="padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			</form>
+
+			<form method="get" action="/equipas/jogadores" style="display: flex; align-items: center; column-gap: 0.3rem; margin-bottom: 2px;">
+			  <select name="jogadoresFiltro" id="jogadoresFiltro" required style="padding: 4px 6px; font-size: 0.9rem; max-width: 200px;">
+			    <option value="xjogadores">X jogadores</option>
+			    <option value="minmax">Min/Max de jogadores</option>
+			  </select>
+
+			  <!-- Min/Max toggle -->
+			  <select name="minOrMaxJogadores" id="minMaxJogadoresToggle" style="padding: 4px 6px; font-size: 0.9rem; max-width: 200px;">
+			    <option value="plantelMais">Mínimo</option>
+			    <option value="plantelMenos">Máximo</option>
+			  </select>
+
+			  <!-- Number input -->
+			  <input type="number" name="jogadoresMin" id="jogadoresMinInput" placeholder="Número de jogadores" min="0"
+			         style="padding: 4px 6px; font-size: 0.9rem; line-height: 1;" />
+
+			  <button type="submit" style="padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			</form>
+
+			<!-- Filtro por Vitorias/Empates/Derrotas -->
+			<form method="get" action="/equipas/estatisticas" style="display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.3rem;">
+				<select name="tipoEstatistica" style="padding: 4px 6px; font-size: 0.9rem;" required>
+					<option value="vitorias">Vitorias</option>
+					<option value="empates">Empates</option>
+					<option value="derrotas">Derrotas</option>
+				</select>
+
+				<input type="number" name="valorEstatistica" placeholder="Valor" min="0"
+					style="padding: 4px 6px; font-size: 0.9rem;" />
+
+				<button type="submit" style="padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			</form>
+
+			<!-- Filtro por Conquistas -->
+			<form method="get" action="/equipas/campeonato" style="display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.3rem;">
+				<input type="text" name="nomeConquista" placeholder="Nome do campeonato" required
+					style="padding: 4px 6px; font-size: 0.9rem;" />
+				<button type="submit" style="padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			</form>
+
+			<!-- Filtro por ausência de jogador em posição -->
+			<form method="get" action="/equipas/ausencia-posicao" style="display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.3rem;">
+				<select name="posicao" required style="padding: 4px 6px; font-size: 0.9rem;">
+					<option value="" disabled selected>Posição em falta</option>
+					<option value="GUARDA_REDES">GUARDA_REDES</option>
+					<option value="FIXO">FIXO</option>
+					<option value="ALA">ALA</option>
+					<option value="PIVO">PIVO</option>
+				</select>
+				<button type="submit" style="padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			</form>
+
+			<!-- Limpar Filtros -->
+			<form method="get" action="/equipas" style="margin: 8px 0;">
+				<button type="submit" style="max-width: 300px; padding: 6px 12px; font-size: 0.9rem;">
+					Limpar filtros
+				</button>
+			</form>
+	        <table>
+	            <thead>
+	                <tr>
+	                    <th>Nome</th>
+	                    <th>Plantel</th>
+	                    <th>Conquistas</th>
+	                </tr>
+	            </thead>
+				<tbody>
+				    <tr th:if="${equipas.empty}">
+				        <td colspan="8">Não há equipas</td>
+				    </tr>
+				    <tr th:each="e: ${equipas}">
+				        <td th:text="${e.nome}">Nome</td>
+						<td>
+						  <span th:each="e, stat : ${e.plantel}">
+						    <span th:text="${e.nome}"></span><span th:if="${!stat.last}">, </span>
+						  </span>
+						</td>
+				        <td th:text="${e.conquistas}">Conquistas</td>
+				    </tr>
+				</tbody>
+	        </table>
+	    </section>
+</body>
+</html>
+<script>
+	// FORM DO JOGADORES
+	  const selectJogadores = document.getElementById('jogadoresFiltro');
+	  const inputJogadores = document.getElementById('jogadoresMinInput');
+	  const toggleJogadores = document.getElementById('minMaxJogadoresToggle');
+
+	  function updateInputStateJogadores() {
+	    const value = selectJogadores.value;
+
+	    if (value === 'minmax') {
+	      inputJogadores.disabled = false;
+	      inputJogadores.placeholder = 'Número mínimo ou máximo de jogadores';
+	      toggleJogadores.style.display = 'inline-block';
+	      toggleJogadores.disabled = false;
+	    } else if (value === 'xjogadores') {
+	      inputJogadores.disabled = false;
+	      inputJogadores.placeholder = 'Número exato de jogadores';
+	      toggleJogadores.style.display = 'none';
+	      toggleJogadores.disabled = true;
+	    } else if (value === 'top5') {
+	      inputJogadores.disabled = true;
+	      inputJogadores.placeholder = 'Não aplicável';
+	      inputJogadores.value = '';
+	      toggleJogadores.style.display = 'none';
+	      toggleJogadores.disabled = true;
+	    }
+	  }
+
+	  updateInputStateJogadores(); // Run on page load
+	  selectJogadores.addEventListener('change', updateInputStateJogadores);
+</script>

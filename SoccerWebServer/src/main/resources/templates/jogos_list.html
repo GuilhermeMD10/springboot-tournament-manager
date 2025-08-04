@@ -1,0 +1,444 @@
+<style>
+	.details-container form {
+	  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	  font-size: 0.9rem;
+	  max-width: 500px;
+	  margin: 0 auto;
+	  padding: 10px;
+	}
+
+	/* Section spacing */
+	.details-container .event-section {
+	  margin-bottom: 0.0rem;
+	}
+
+	/* Labels */
+	.details-container label {
+	  font-weight: 600;
+	  display: block;
+	  margin-bottom: 6px;
+	}
+
+	.details-container .players-list {
+	  font-size: 0.9rem;
+	  margin: 0.2rem 0 0.6rem 0;
+	}
+
+	/* Select dropdowns */
+	.details-container select {
+	  font-size: 0.9rem;
+	  padding: 5px 8px;
+	  border-radius: 4px;
+	  border: 1px solid #ccc;
+	  min-width: 180px;
+	  margin-right: 0.5rem;
+	  cursor: pointer;
+	  transition: border-color 0.2s ease;
+	}
+	.details-container select:hover,
+	.details-container select:focus {
+	  border-color: #8ab4f8;
+	  outline: none;
+	}
+
+	/* Add buttons */
+	.details-container button.add-btn {
+	  padding: 5px 12px;
+	  font-size: 0.9rem;
+	  background-color: #2e77d0;
+	  color: white;
+	  border: none;
+	  border-radius: 4px;
+	  cursor: pointer;
+	  transition: background-color 0.2s ease;
+	}
+	.details-container button.add-btn:hover {
+	  background-color: #245ca8;
+	}
+
+	/* Container for selected players */
+	.details-container .selected-list {
+	  margin-top: 8px;
+	  min-height: 32px;
+	  display: flex;
+	  flex-wrap: wrap;
+	  gap: 6px;
+	}
+
+	/* Each player pill */
+	.details-container .selected-list div {
+	  background-color: #d0e8ff;
+	  border-radius: 16px;
+	  padding: 4px 10px;
+	  display: flex;
+	  align-items: center;
+	  font-size: 0.85rem;
+	  color: #1a3e72;
+	  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	}
+
+	/* Remove button inside pill */
+	.details-container .selected-list button {
+	  background: transparent;
+	  border: none;
+	  color: #1a3e72;
+	  font-weight: 700;
+	  font-size: 1.1rem;
+	  margin-left: 6px;
+	  cursor: pointer;
+	  line-height: 1;
+	  padding: 0 4px;
+	  transition: color 0.2s ease;
+	}
+	.details-container .selected-list button:hover {
+	  color: #d0342c;
+	}
+
+	/* Submit button */
+	.details-container button.submit-btn {
+	  background-color: #287233;
+	  color: white;
+	  border: none;
+	  padding: 8px 20px;
+	  border-radius: 6px;
+	  font-size: 1rem;
+	  cursor: pointer;
+	  transition: background-color 0.25s ease;
+	  display: block;
+	  margin: 1.5rem auto 0 auto;
+	  min-width: 150px;
+	  font-weight: 600;
+	}
+	.details-container button.submit-btn:hover {
+	  background-color: #1e531c;
+	}
+
+</style>
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::section})}">
+<body>
+  <section>
+    <h2>Jogos:</h2>
+
+    <!-- Filtro por jogos realizados -->
+    <form method="get" action="/jogos/realizados" style="margin-bottom: 0.5rem;">
+      <button type="submit" style="padding: 6px 12px; font-size: 0.9rem;">Ver jogos realizados</button>
+    </form>
+
+    <!-- Filtro por jogos a serem realizados -->
+    <form method="get" action="/jogos/porRealizar" style="margin-bottom: 0.5rem;">
+      <button type="submit" style="padding: 6px 12px; font-size: 0.9rem;">Ver jogos por realizar</button>
+    </form>
+
+    <!-- Filtro por quantidade de golos -->
+    <form method="get" action="/jogos/golos" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+      <select name="filtroGolos" id="filtroGolos" required>
+        <option value="x">X Golos</option>
+        <option value="top5">Top 5 com mais golos</option>
+        <option value="exato">Resultado Exato (X-Y)</option>
+      </select>
+      <input type="number" name="golos" id="golosInput" placeholder="Total de golos" min="0" />
+
+	  <input type="number" name="golosCasa" id="golosCasaInput" placeholder="Golos Casa" min="0" />
+	  <input type="number" name="golosVisitante" id="golosVisitanteInput" placeholder="Golos Visitante" min="0" />
+      <button type="submit">Filtrar</button>
+    </form>
+
+    <!-- Filtro por localização -->
+    <form method="get" action="/jogos/local" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+      <input type="text" name="local" placeholder="Filtrar por local" required pattern="^[A-Za-zÀ-ÿ0-9\s]+$" />
+      <button type="submit">Filtrar</button>
+    </form>
+
+    <!-- Filtro por turno do jogo -->
+    <form method="get" action="/jogos/turno" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+      <select name="turno" required>
+        <option value="MANHA">Manhã</option>
+        <option value="TARDE">Tarde</option>
+        <option value="NOITE">Noite</option>
+      </select>
+      <button type="submit">Filtrar</button>
+    </form>
+
+    <form method="get" action="/jogos" style="margin-bottom: 1rem;">
+      <button type="submit" style="padding: 6px 12px; font-size: 0.9rem;">Limpar Filtros</button>
+    </form>
+
+	<table>
+	  <thead>
+	    <tr>
+	      <th>Visitada</th>
+	      <th>Visitante</th>
+		  <th>Data</th>
+		  <th>Horário</th>
+		  <th>Local</th>
+		  <th>Arbitro Principal</th>
+		  <th>Equipa Arbitragem</th>
+	      <th>Resultado</th>
+	    </tr>
+	  </thead>
+	  <tbody th:if="${jogos != null and !jogos.isEmpty()}" th:each="jogo : ${jogos}">
+	    <tr>
+		  <td th:text="${jogo.equipaTitularVisitada.equipa.nome}"></td>
+		  <td th:text="${jogo.equipaTitularVisitante.equipa.nome}"></td>
+	      <td style="width: 150px;"  th:text="${jogo.data}"></td>
+		  <td th:text="${jogo.horario}"></td>
+	      <td th:text="${jogo.local}"></td>
+		  <td th:text="${jogo.arbitroPrincipal.nome}"></td>
+		  <td>
+		    <span th:each="a, stat : ${jogo.equipaArbitragem}">
+		      <span th:text="${a.nome}"></span><span th:if="${!stat.last}">, </span>
+		    </span>
+		  </td>
+		  <td style="width: 200px;"th:if="${jogo.resultado != null}" th:text="'Resultado:' + ${jogo.resultado.golosVisitado.size()} + '-' + ${jogo.resultado.golosVisitante.size()}">
+		  </td>
+
+	      <td th:if="${jogo.resultado == null}">
+	        <button type="button" th:attr="onclick=|toggleDetails('${jogo.id}')|">Registar Resultado</button>
+	      </td>
+	    </tr>
+	    <tr th:id="'details-' + ${jogo.id}" style="display: none;">
+	      <td colspan="5">
+	        <div class="details-container">
+	          <!-- Show form if no result -->
+			  <div th:if="${jogo.resultado == null}">
+				<form th:action="@{/resultados/save}" method="post">
+				  <input type="hidden" name="jogoId" th:value="${jogo.id}" />
+
+				  
+				  <!-- Helper function to render each event block -->
+				  <h1 th:text = "${jogo.equipaTitularVisitada.equipa.nome}"></h1>
+				  <div class="event-section">
+				    <label>Jogadores:</label>
+				    <ul class="players-list">
+				      <li th:each="jogador : ${jogo.equipaTitularVisitada.jogadores}" th:text="${jogador.nome}"></li>
+				    </ul>
+				  </div>
+				  <div class="event-section">
+				    <label>Golos Visitado:</label><br/>
+				    <select id="golosVisitadoSelect">
+				      <option th:each="jogador : ${jogo.equipaTitularVisitada.jogadores}" th:value="${jogador.id}" th:text="${jogador.nome}"></option>
+				    </select>
+				    <button type="button" class="add-btn" onclick="addGoloVisitado()">Adicionar</button>
+				    <div id="golosVisitadoList" class="selected-list"></div>
+				  </div>
+				  
+				  <div class="event-section">
+				    <label>Amarelos Visitado:</label><br/>
+				    <select id="amarelosVisitadoSelect">
+				      <option th:each="jogador : ${jogo.equipaTitularVisitada.jogadores}" th:value="${jogador.id}" th:text="${jogador.nome}"></option>
+				    </select>
+				    <button type="button" class="add-btn" onclick="addAmareloVisitado()">Adicionar</button>
+				    <div id="amarelosVisitadoList" class="selected-list"></div>
+				  </div>
+
+				  <div class="event-section">
+				    <label>Vermelhos Visitado:</label><br/>
+				    <select id="vermelhosVisitadoSelect">
+				      <option th:each="jogador : ${jogo.equipaTitularVisitada.jogadores}" th:value="${jogador.id}" th:text="${jogador.nome}"></option>
+				    </select>
+				    <button type="button" class="add-btn" onclick="addVermelhoVisitado()">Adicionar</button>
+				    <div id="vermelhosVisitadoList" class="selected-list"></div>
+				  </div>
+				  
+				  
+				  <h1 th:text = "${jogo.equipaTitularVisitante.equipa.nome}"></h1>
+				  <div class="event-section">
+				    <label>Jogadores:</label>
+				    <ul class="players-list">
+				      <li th:each="jogador : ${jogo.equipaTitularVisitante.jogadores}" th:text="${jogador.nome}"></li>
+				    </ul>
+				  </div>
+				  <div class="event-section">
+				    <label>Golos Visitante:</label><br/>
+				    <select id="golosVisitanteSelect">
+				      <option th:each="jogador : ${jogo.equipaTitularVisitante.jogadores}" th:value="${jogador.id}" th:text="${jogador.nome}"></option>
+				    </select>
+				    <button type="button" class="add-btn" onclick="addGoloVisitante()">Adicionar</button>
+				    <div id="golosVisitanteList" class="selected-list"></div>
+				  </div>
+
+				  <div class="event-section">
+				    <label>Amarelos Visitante:</label><br/>
+				    <select id="amarelosVisitanteSelect">
+				      <option th:each="jogador : ${jogo.equipaTitularVisitante.jogadores}" th:value="${jogador.id}" th:text="${jogador.nome}"></option>
+				    </select>
+				    <button type="button" class="add-btn" onclick="addAmareloVisitante()">Adicionar</button>
+				    <div id="amarelosVisitanteList" class="selected-list"></div>
+				  </div>
+
+				  <div class="event-section">
+				    <label>Vermelhos Visitante:</label><br/>
+				    <select id="vermelhosVisitanteSelect">
+				      <option th:each="jogador : ${jogo.equipaTitularVisitante.jogadores}" th:value="${jogador.id}" th:text="${jogador.nome}"></option>
+				    </select>
+				    <button type="button" class="add-btn" onclick="addVermelhoVisitante()">Adicionar</button>
+				    <div id="vermelhosVisitanteList" class="selected-list"></div>
+				  </div>
+				  <input type="hidden" id="vencedorInput" name="vencedor" value="0" />
+				  <input type="hidden" id="equipaVisitadaId" th:value="${jogo.equipaTitularVisitada.id}" />
+				  <input type="hidden" id="equipaVisitanteId" th:value="${jogo.equipaTitularVisitante.id}" />
+				  <button type="submit" class="submit-btn" onclick="handleFormSubmit()">Salvar Resultado</button>
+				</form>
+			  </div>
+
+	          <!-- Show result if it exists -->
+	          <div th:if="${jogo.resultado != null}">
+				<p th:text="'Resultado: ' + ${jogo.resultado.golosVisitado.size()} + ' - ' + ${jogo.resultado.golosVisitante.size()}"></p>
+	          </div>
+	        </divclass="details-container">
+	      </td>
+	    </tr>
+	  </tbody>
+	</table>
+  </section>
+</body>
+</html>
+
+<script>
+	const filtroGolos = document.getElementById('filtroGolos');
+	 const inputGolos = document.getElementById('golosInput');
+	 const inputGolosCasa = document.getElementById('golosCasaInput');
+	 const inputGolosVisitante = document.getElementById('golosVisitanteInput');
+
+	 function updateGolosInputs() {
+	   const selected = filtroGolos.value;
+
+	   // Show only the relevant inputs
+	   if (selected === 'x') {
+	     inputGolos.style.display = 'inline-block';
+	     inputGolos.disabled = false;
+
+	     inputGolosCasa.style.display = 'none';
+	     inputGolosVisitante.style.display = 'none';
+	     inputGolosCasa.disabled = true;
+	     inputGolosVisitante.disabled = true;
+
+	   } else if (selected === 'top5') {
+	     inputGolos.style.display = 'none';
+	     inputGolos.disabled = true;
+
+	     inputGolosCasa.style.display = 'none';
+	     inputGolosVisitante.style.display = 'none';
+	     inputGolosCasa.disabled = true;
+	     inputGolosVisitante.disabled = true;
+
+	   } else if (selected === 'exato') {
+	     inputGolos.style.display = 'none';
+	     inputGolos.disabled = true;
+
+	     inputGolosCasa.style.display = 'inline-block';
+	     inputGolosVisitante.style.display = 'inline-block';
+	     inputGolosCasa.disabled = false;
+	     inputGolosVisitante.disabled = false;
+	   }
+	 }
+
+	 // Initialize visibility on load
+	 updateGolosInputs();
+	 filtroGolos.addEventListener('change', updateGolosInputs);
+  
+  function toggleDetails(index) {
+      const row = document.getElementById("details-" + index);
+      row.style.display = row.style.display === "none" ? "table-row" : "none";
+  }
+
+  updateGolosInputs();
+  filtroGolos.addEventListener('change', updateGolosInputs);
+  
+  // Data arrays to hold added players
+   const golosVisitadoList = [];
+   const golosVisitanteList = [];
+   const amarelosVisitadoList = [];
+   const amarelosVisitanteList = [];
+   const vermelhosVisitadoList = [];
+   const vermelhosVisitanteList = [];
+
+   // Generic helper to render lists and add hidden inputs
+   function renderList(list, containerId, inputName) {
+     const container = document.getElementById(containerId);
+     container.innerHTML = '';
+     list.forEach((jogador, i) => {
+       const div = document.createElement('div');
+       div.textContent = jogador.nome + ' ';
+       
+       const btn = document.createElement('button');
+       btn.type = 'button';
+       btn.textContent = 'x';
+       btn.title = 'Remover';
+       btn.onclick = () => {
+         list.splice(i, 1);
+         renderList(list, containerId, inputName);
+       };
+       div.appendChild(btn);
+
+       // Hidden input to submit duplicated entries
+       const input = document.createElement('input');
+       input.type = 'hidden';
+       input.name = inputName;
+       input.value = jogador.id;
+       div.appendChild(input);
+
+       container.appendChild(div);
+     });
+   }
+
+   // Functions to add players
+   function addGoloVisitado() {
+     const sel = document.getElementById('golosVisitadoSelect');
+     golosVisitadoList.push({id: sel.value, nome: sel.options[sel.selectedIndex].text});
+     renderList(golosVisitadoList, 'golosVisitadoList', 'golosVisitado');
+   }
+
+   function addGoloVisitante() {
+     const sel = document.getElementById('golosVisitanteSelect');
+     golosVisitanteList.push({id: sel.value, nome: sel.options[sel.selectedIndex].text});
+     renderList(golosVisitanteList, 'golosVisitanteList', 'golosVisitante');
+   }
+
+   function addAmareloVisitado() {
+     const sel = document.getElementById('amarelosVisitadoSelect');
+     amarelosVisitadoList.push({id: sel.value, nome: sel.options[sel.selectedIndex].text});
+     renderList(amarelosVisitadoList, 'amarelosVisitadoList', 'amarelosVisitado');
+   }
+
+   function addAmareloVisitante() {
+     const sel = document.getElementById('amarelosVisitanteSelect');
+     amarelosVisitanteList.push({id: sel.value, nome: sel.options[sel.selectedIndex].text});
+     renderList(amarelosVisitanteList, 'amarelosVisitanteList', 'amarelosVisitante');
+   }
+
+   function addVermelhoVisitado() {
+     const sel = document.getElementById('vermelhosVisitadoSelect');
+     vermelhosVisitadoList.push({id: sel.value, nome: sel.options[sel.selectedIndex].text});
+     renderList(vermelhosVisitadoList, 'vermelhosVisitadoList', 'vermelhosVisitado');
+   }
+
+   function addVermelhoVisitante() {
+     const sel = document.getElementById('vermelhosVisitanteSelect');
+     vermelhosVisitanteList.push({id: sel.value, nome: sel.options[sel.selectedIndex].text});
+     renderList(vermelhosVisitanteList, 'vermelhosVisitanteList', 'vermelhosVisitante');
+   }
+   
+   function determineVencedor() {
+	const golosVisitado = golosVisitadoList.length;
+	const golosVisitante = golosVisitanteList.length;
+
+	  const equipaVisitadaId = document.getElementById('equipaVisitadaId').value;
+	  const equipaVisitanteId = document.getElementById('equipaVisitanteId').value;
+
+      let vencedor = 0;
+      if (golosVisitado > golosVisitante) {
+        vencedor = equipaVisitadaId;
+      } else if (golosVisitado < golosVisitante) {
+        vencedor = equipaVisitanteId;
+      }
+
+      document.getElementById('vencedorInput').value = vencedor;
+    }
+
+    function handleFormSubmit() {
+      determineVencedor(); // Set the correct vencedor
+      document.querySelector('form').submit(); // Now submit the form
+    }
+</script>

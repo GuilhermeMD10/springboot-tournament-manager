@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::section})}">
+
+<body>
+    <section>
+        <h2>Customer:</h2>
+
+        <table>
+            <tr>
+                <th>Name:</th>
+                <td th:text="${customer.name}"></td>
+            </tr>
+            <tr>
+                <th>VAT:</th>
+                <td th:text="${customer.vat}"></td>
+            </tr>
+            <tr>
+                <th colspan="2">Notes:</th>
+            </tr>
+            <tr>
+                <td th:text="${customer.notes}"></td>
+            </tr>
+
+
+        </table>
+
+
+        <a th:href="@{/customers/} + ${customer.id} + @{/delete}">(Delete Customer)</a>
+    </section>
+</body>
+
+</html>

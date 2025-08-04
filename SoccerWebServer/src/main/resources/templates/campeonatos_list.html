@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::section})}">
+<body>
+	<section>
+	        <h2>Campeonatos:</h2>
+			<!-- Filtro por Nome -->
+			  <form method="get" action="/campeonatos/nome" style="display: flex; align-items: center; margin: 0;">
+			    <input type="text" name="nome" placeholder="Filtrar por nome" 
+			           title="Só letras e espaços são permitidos"
+			           style="padding: 4px 6px; font-size: 0.9rem;" />
+			    <button type="submit" style="padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			  </form>
+
+			  <!-- Filtro por Equipa (ID) -->
+			  <form method="get" action="/campeonatos/equipa" style="display: flex; align-items: center; margin: 0;">
+			    <input type="number" name="equipaId" placeholder="Filtrar por ID da equipa" required min="1"
+			           style="padding: 4px 6px; font-size: 0.9rem;" />
+			    <button type="submit" style="padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			  </form>
+
+			  <!-- Filtro por Número de Jogos Realizados -->
+			  <form method="get" action="/campeonatos/jogos-realizados" style="display: flex; align-items: center; margin: 0;">
+			    <input type="number" name="jogosRealizados" placeholder="Jogos realizados" required min="0"
+			           style="padding: 4px 6px; font-size: 0.9rem;" />
+			    <button type="submit" style="padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			  </form>
+
+			  <!-- Filtro por Número de Jogos por Realizar -->
+			  <form method="get" action="/campeonatos/jogos-por-realizar" style="display: flex; align-items: center; margin: 0;">
+			    <input type="number" name="jogosPorRealizar" placeholder="Jogos por realizar" required min="0"
+			           style="padding: 4px 6px; font-size: 0.9rem;" />
+			    <button type="submit" style="padding: 4px 10px; font-size: 0.9rem;">Filtrar</button>
+			  </form>
+
+			  <!-- Limpar filtros -->
+			  <form method="get" action="/campeonatos" style="margin: 8px 0;">
+			    <button type="submit" style="padding: 6px 12px; font-size: 0.9rem;">
+			      Limpar filtros
+			    </button>
+			  </form>
+			
+			
+	        <table>
+	            <thead>
+	                <tr>
+	                    <th>Nome</th>
+						<th>Classificação</th>
+						<th>Equipas</th>
+						<th>Jogos</th>
+	                </tr>
+	            </thead>
+				<tbody>
+				    <tr th:if="${campeonatos.empty}">
+				        <td colspan="8">Não há campeonatos</td>
+				    </tr>
+				    <tr th:each="c: ${campeonatos}">
+				        <td th:text="${c.nome}">Nome</td>
+				        <td th:text="${c.classificacao}">Classificação</td>
+				        <td th:text="${c.equipas}">Equipas</td>
+						<td th:text="${c.jogos}">Jogos</td>
+				    </tr>
+				</tbody>
+	        </table>
+	    </section>
+</body>
+</html>

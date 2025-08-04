@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pt.ul.fc.di.css.soccernowjavafx.controller.CampeonatoController" spacing="15" prefWidth="450" prefHeight="600">
+
+    <children>
+        <MenuBar>
+            <menus>
+                <Menu text="Commands">
+                    <items>
+                        <MenuItem fx:id="btnBack" text="Back" onAction="#back"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+
+
+        <Label text="Atualizar Campeonato" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+        <VBox spacing="10" fx:id="editarCampeonatoBox" visible="false" managed="false">
+            <Label text="Novo Nome da Campeonato:"/>
+            <TextField fx:id="novoNomeField" promptText="Insira novo nome"/>
+
+            <Label text="Adicionar Equipa:"/>
+            <HBox spacing="10">
+                <ComboBox fx:id="equipasDisponiveisComboBox" promptText="Selecionar Equipa"/>
+                <Button text="+" onAction="#handleAdicionarEquipa"/>
+            </HBox>
+
+            <Label text="Remover Equipa:"/>
+            <FlowPane fx:id="equipasCampeonatoPane" hgap="10" vgap="10"/>
+        </VBox>
+
+        <Label text="Jogos do Campeonato:"/>
+        <VBox fx:id="jogosCampeonatoBox" spacing="5">
+        </VBox>
+
+        <Label text="Adicionar Jogos ao Campeonato:" style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="jogosDisponiveisComboBox" onAction="#handleAdicionarJogo" />
+
+
+        <HBox spacing="10">
+            <Button text="Guardar Alterações" onAction="#handleGuardarAlteracoes"/>
+            <Button text="Apagar Campeonato" onAction="#handleApagarCampeonato"/>
+            <Button text="Iniciar Campeonato" onAction="#handleIniciarCampeonato"/>
+            <Button text="Terminar Campeonato" onAction="#handleTerminarCampeonato"/>
+        </HBox>
+
+        <Label text="Campeonatos Existentes:" style="-fx-font-weight: bold;"/>
+        <VBox fx:id="listaCampeonatosBox" spacing="5"/>
+
+        <Label fx:id="mensagemLabel" textFill="red"/>
+    </children>
+</VBox>
